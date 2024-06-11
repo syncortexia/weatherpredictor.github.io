@@ -121,7 +121,6 @@
                 let girlsAdvice = "";
                 let guysAdvice = "";
 
-                // Temperature-based advice
                 if (temperatureC < 0) {
                     generalAdvice = "It's freezing! Ensure you're well insulated.";
                     girlsAdvice = "Consider wearing a down jacket, thermal leggings, and wool socks.";
@@ -140,7 +139,6 @@
                     guysAdvice = "A breathable linen shirt and board shorts are recommended.";
                 }
 
-                // Weather condition-based advice
                 if ([4000, 4001, 4200, 4201, 6000, 6001, 6200, 6201].includes(weatherCode)) {
                     generalAdvice += " Don't forget an umbrella or a waterproof jacket!";
                     girlsAdvice += " Waterproof footwear and a stylish raincoat would be practical.";
