@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Weather Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            animation: gradientWave 300s ease infinite; 
+        }
+        @keyframes gradientWave {
+            0%, 100% {
+                background: linear-gradient(to right, #6a11cb, #2575fc);
+            }
+            50% {
+                background: linear-gradient(to left, #6a11cb, #2575fc);
+            }
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #2575fc;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1a5bb8;
+        }
+        #weatherResult {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Predictor</h1>
+        <form id="locationForm">
+            <label for="location">Enter your location:</label>
+            <input type="text" id="location" name="location" placeholder="e.g., New York">
+            <button type="submit">Predict Weather</button>
+        </form>
+        <div id="weatherResult"></div>
+    </div>
+
+    <script>
+        document.getElementById('locationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const location = document.getElementById('location').value;
+            const geocodeApiKey = '430f8dfd5a5a437983b81274b8b97ebc'; 
+            const weatherApiKey = '0ul1acnduJL3qK4JOi4fll0oj0qy7KL9';
+
+            function getWeatherDescription(code) {
+                const weatherCodes = {
+                    1000: "clear",
+                    1100: "mostly clear",
+                    1101: "partly cloudy",
+                    1102: "mostly cloudy",
+                    1001: "cloudy",
+                    2000: "fog",
+                    2100: "light fog",
+                    4000: "drizzle",
+                    4001: "rain",
+                    4200: "light rain",
+                    4201: "heavy rain",
+                    5000: "snow",
+                    5001: "flurries",
+                    5100: "light snow",
+                    5101: "heavy snow",
+                    6000: "freezing drizzle",
+                    6001: "freezing rain",
+                    6200: "light freezing rain",
+                    6201: "heavy freezing rain",
+                    7000: "ice pellets",
+                    7101: "heavy ice pellets",
+                    7102: "light ice pellets",
+                    8000: "thunderstorm"
+                };
+                return weatherCodes[code] || "Unknown weather condition";
+            }
+
+            function celsiusToFahrenheit(celsius) {
+                return (celsius * 9/5) + 32;
+            }
+
+            function recommendOutfit(temperatureC, weatherCode) {
+                let generalAdvice = "";
+                let girlsAdvice = "";
+                let guysAdvice = "";
+
+                // Temperature-based advice
+                if (temperatureC < 0) {
+                    generalAdvice = "It's freezing! Ensure you're well insulated.";
+                    girlsAdvice = "Consider wearing a down jacket, thermal leggings, and wool socks.";
+                    guysAdvice = "A parka, thermal pants, and insulated boots would be ideal.";
+                } else if (temperatureC < 15) {
+                    generalAdvice = "It's chilly. Keep warm.";
+                    girlsAdvice = "A wool coat, turtleneck sweater, and jeans might be comfortable.";
+                    guysAdvice = "A fleece jacket, long-sleeve shirt, and chinos could work well.";
+                } else if (temperatureC < 25) {
+                    generalAdvice = "The weather is mild. Light clothing will do.";
+                    girlsAdvice = "A light blouse and a midi skirt could be perfect.";
+                    guysAdvice = "A casual button-down shirt and cargo shorts would be suitable.";
+                } else {
+                    generalAdvice = "It's quite warm! Light and airy clothing is recommended.";
+                    girlsAdvice = "A sundress or a tank top with a mini skirt would be cool.";
+                    guysAdvice = "A breathable linen shirt and board shorts are recommended.";
+                }
+
+                // Weather condition-based advice
+                if ([4000, 4001, 4200, 4201, 6000, 6001, 6200, 6201].includes(weatherCode)) {
+                    generalAdvice += " Don't forget an umbrella or a waterproof jacket!";
+                    girlsAdvice += " Waterproof footwear and a stylish raincoat would be practical.";
+                    guysAdvice += " Water-resistant shoes and a durable rain jacket are advisable.";
+                } else if ([5000, 5001, 5100, 5101].includes(weatherCode)) {
+                    generalAdvice += " Expect snow. Wear boots and thermal wear.";
+                    girlsAdvice += " A fur-lined hooded coat and insulated gloves are recommended.";
+                    guysAdvice += " A windproof jacket and thermal gloves would help keep you warm.";
+                } else if ([8000].includes(weatherCode)) {
+                    generalAdvice += " There might be thunderstorms. Stay safe and avoid open areas.";
+                    girlsAdvice += " A rubber raincoat and boots would be wise.";
+                    guysAdvice += " A heavy-duty waterproof jacket and sturdy boots are recommended.";
+                }
+
+                return `${generalAdvice}<br><br>${girlsAdvice}<br><br>${guysAdvice}`;
+            }
+
+            fetch(`https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(location)}&key=${geocodeApiKey}`)
+                .then(response => response.json())
+                .then(geocodeData => {
+                    if (geocodeData.results && geocodeData.results.length > 0) {
+                        const lat = geocodeData.results[0].geometry.lat;
+                        const lng = geocodeData.results[0].geometry.lng;
+
+                        return fetch(`https://api.tomorrow.io/v4/timelines?location=${lat},${lng}&fields=temperature,weatherCode&timesteps=current&units=metric&apikey=${weatherApiKey}`);
+                    } else {
+                        throw new Error('Geocoding failed');
+                    }
+                })
+                .then(response => response.json())
+                .then(weatherData => {
+                    if (weatherData && weatherData.data && weatherData.data.timelines && weatherData.data.timelines.length > 0) {
+                        const currentData = weatherData.data.timelines[0].intervals[0].values;
+                        const weather = getWeatherDescription(currentData.weatherCode);
+                        const temperatureC = currentData.temperature;
+                        const temperatureF = celsiusToFahrenheit(temperatureC);
+                        const outfitRecommendation = recommendOutfit(temperatureC, currentData.weatherCode);
+                        document.getElementById('weatherResult').innerHTML = `The current weather in ${location} is ${weather} with a temperature of ${temperatureC.toFixed(1)}°C / ${temperatureF.toFixed(1)}°F.<br><br>${outfitRecommendation}`;
+                    } else {
+                        document.getElementById('weatherResult').innerHTML = 'Failed to retrieve weather data.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('weatherResult').innerHTML = 'Failed to retrieve weather data.';
+                });
+        });
+    </script>
+</body>
+</html>
