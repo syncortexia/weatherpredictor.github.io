@@ -133,42 +133,42 @@
 
             function recommendOutfit(temperatureC, weatherCode) {
                 let generalAdvice = "";
-                let girlsAdvice = "";
-                let guysAdvice = "";
+                let sensitiveColdAdvice = "";
+                let sensitiveHeatAdvice = "";
 
                 if (temperatureC < 0) {
                     generalAdvice = "It's freezing! Ensure you're well insulated.";
-                    girlsAdvice = "Consider wearing a down jacket, thermal leggings, and wool socks.";
-                    guysAdvice = "A parka, thermal pants, and insulated boots would be ideal.";
+                    sensitiveColdAdvice = "Consider thermal layers, a heavy insulated coat, and accessories like earmuffs and mittens.";
+                    sensitiveHeatAdvice = "Stay indoors if possible, with adequate heating.";
                 } else if (temperatureC < 15) {
                     generalAdvice = "It's chilly. Keep warm.";
-                    girlsAdvice = "A wool coat, turtleneck sweater, and jeans might be comfortable.";
-                    guysAdvice = "A fleece jacket, long-sleeve shirt, and chinos could work well.";
+                    sensitiveColdAdvice = "Wear a heavy wool coat, thermal undergarments, and a warm hat and gloves.";
+                    sensitiveHeatAdvice = "Layer with options to adjust comfort, such as a light sweater and a scarf.";
                 } else if (temperatureC < 25) {
                     generalAdvice = "The weather is mild. Light clothing will do.";
-                    girlsAdvice = "A light blouse and a midi skirt could be perfect.";
-                    guysAdvice = "A casual button-down shirt and cargo shorts would be suitable.";
+                    sensitiveColdAdvice = "You might still prefer a light jacket or a long-sleeve shirt.";
+                    sensitiveHeatAdvice = "Opt for breathable fabrics like cotton and avoid direct sunlight.";
                 } else {
                     generalAdvice = "It's quite warm! Light and airy clothing is recommended.";
-                    girlsAdvice = "A sundress or a tank top with a mini skirt would be cool.";
-                    guysAdvice = "A breathable linen shirt and board shorts are recommended.";
+                    sensitiveColdAdvice = "A light cardigan might still be comfortable for you.";
+                    sensitiveHeatAdvice = "Wear very light clothing, such as linen or moisture-wicking fabrics, and use sun protection.";
                 }
 
                 if ([4000, 4001, 4200, 4201, 6000, 6001, 6200, 6201].includes(weatherCode)) {
                     generalAdvice += " Don't forget an umbrella or a waterproof jacket!";
-                    girlsAdvice += " Waterproof footwear and a stylish raincoat would be practical.";
-                    guysAdvice += " Water-resistant shoes and a durable rain jacket are advisable.";
+                    sensitiveColdAdvice += " Ensure your rain gear is insulated.";
+                    sensitiveHeatAdvice += " Choose light, waterproof layers to avoid overheating.";
                 } else if ([5000, 5001, 5100, 5101].includes(weatherCode)) {
                     generalAdvice += " Expect snow. Wear boots and thermal wear.";
-                    girlsAdvice += " A fur-lined hooded coat and insulated gloves are recommended.";
-                    guysAdvice += " A windproof jacket and thermal gloves would help keep you warm.";
+                    sensitiveColdAdvice += " Double up on insulation with thermal layers and a heavy-duty snowsuit if needed.";
+                    sensitiveHeatAdvice += " Keep dry and use insulated waterproof boots.";
                 } else if ([8000].includes(weatherCode)) {
                     generalAdvice += " There might be thunderstorms. Stay safe and avoid open areas.";
-                    girlsAdvice += " A rubber raincoat and boots would be wise.";
-                    guysAdvice += " A heavy-duty waterproof jacket and sturdy boots are recommended.";
+                    sensitiveColdAdvice += " Wear a waterproof insulated jacket.";
+                    sensitiveHeatAdvice += " Ensure your clothing is breathable to handle humidity.";
                 }
 
-                return `${generalAdvice}<br><br>${girlsAdvice}<br><br>${guysAdvice}`;
+                return `${generalAdvice}<br><br>Sensitive to cold: ${sensitiveColdAdvice}<br><br>Sensitive to heat: ${sensitiveHeatAdvice}`;
             }
 
             fetch(`https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(location)}&key=${geocodeApiKey}`)
