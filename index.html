@@ -137,21 +137,21 @@
                 let sensitiveHeatAdvice = "";
 
                 if (temperatureC < 0) {
-                    generalAdvice = "It's freezing! Ensure you're well insulated.";
-                    sensitiveColdAdvice = "Consider thermal layers, a heavy insulated coat, and accessories like earmuffs and mittens.";
-                    sensitiveHeatAdvice = "Stay indoors if possible, with adequate heating.";
+                    generalAdvice = "It's freezing! Everyone should wear insulated coats, thermal layers, and winter accessories like hats and gloves.";
+                    sensitiveColdAdvice = "If you're sensitive to cold, consider additional thermal layers, a heavy insulated coat, and accessories like earmuffs and mittens.";
+                    sensitiveHeatAdvice = "If you're sensitive to heat, stay indoors if possible, with adequate heating.";
                 } else if (temperatureC < 15) {
-                    generalAdvice = "It's chilly. Keep warm.";
-                    sensitiveColdAdvice = "Wear a heavy wool coat, thermal undergarments, and a warm hat and gloves.";
-                    sensitiveHeatAdvice = "Layer with options to adjust comfort, such as a light sweater and a scarf.";
+                    generalAdvice = "It's chilly. A good choice would be a wool coat or a padded jacket, along with a hat and gloves.";
+                    sensitiveColdAdvice = "If you're sensitive to cold, wear a heavy wool coat, thermal undergarments, and a warm hat and gloves.";
+                    sensitiveHeatAdvice = "If you're sensitive to heat, layer with options to adjust comfort, such as a light sweater and a scarf.";
                 } else if (temperatureC < 25) {
-                    generalAdvice = "The weather is mild. Light clothing will do.";
-                    sensitiveColdAdvice = "You might still prefer a light jacket or a long-sleeve shirt.";
-                    sensitiveHeatAdvice = "Opt for breathable fabrics like cotton and avoid direct sunlight.";
+                    generalAdvice = "The weather is mild. A comfortable outfit could include a long-sleeve shirt or a light jacket.";
+                    sensitiveColdAdvice = "If you're sensitive to cold, you might still prefer a light jacket or a long-sleeve shirt.";
+                    sensitiveHeatAdvice = "If you're sensitive to heat, opt for breathable fabrics like cotton and avoid direct sunlight.";
                 } else {
-                    generalAdvice = "It's quite warm! Light and airy clothing is recommended.";
-                    sensitiveColdAdvice = "A light cardigan might still be comfortable for you.";
-                    sensitiveHeatAdvice = "Wear very light clothing, such as linen or moisture-wicking fabrics, and use sun protection.";
+                    generalAdvice = "It's quite warm! Opt for shorts, t-shirts, or light dresses.";
+                    sensitiveColdAdvice = "If you're sensitive to cold, a light cardigan might still be comfortable for you.";
+                    sensitiveHeatAdvice = "If you're sensitive to heat, wear very light clothing, such as linen or moisture-wicking fabrics, and use sun protection.";
                 }
 
                 if ([4000, 4001, 4200, 4201, 6000, 6001, 6200, 6201].includes(weatherCode)) {
@@ -168,7 +168,7 @@
                     sensitiveHeatAdvice += " Ensure your clothing is breathable to handle humidity.";
                 }
 
-                return `${generalAdvice}<br><br>Sensitive to cold: ${sensitiveColdAdvice}<br><br>Sensitive to heat: ${sensitiveHeatAdvice}`;
+                return `${generalAdvice}<br><br>${sensitiveColdAdvice}<br><br>Sensitive to heat: ${sensitiveHeatAdvice}`;
             }
 
             fetch(`https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(location)}&key=${geocodeApiKey}`)
